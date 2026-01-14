@@ -17,6 +17,10 @@ import androidx.compose.ui.unit.sp
 import com.example.therealprijectlevelup.models.Product
 import com.example.therealprijectlevelup.viewModels.HomeViewModel
 import com.example.therealprijectlevelup.viewModels.SettingsViewModel
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.graphicsLayer
+
 
 @Composable
 fun HomeView(
@@ -53,8 +57,25 @@ fun HomeView(
 
 @Composable
 fun ProductItem(product: Product) {
+    var visible by remember { mutableStateOf(false) }
+
+    val scale by animateFloatAsState(
+        targetValue = if (visible) 1f else 0.9f,
+        label = ""
+    )
+
+    LaunchedEffect(Unit) {
+        visible = true
+    }
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+                alpha = scale
+            },
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -62,7 +83,6 @@ fun ProductItem(product: Product) {
             modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Surface(
                 modifier = Modifier.size(130.dp),
                 shape = RoundedCornerShape(12.dp),
@@ -71,10 +91,7 @@ fun ProductItem(product: Product) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
-                text = product.name,
-                fontWeight = FontWeight.Medium
-            )
+            Text(product.name, fontWeight = FontWeight.Medium)
 
             Text(
                 text = "$ ${product.price}",
@@ -84,3 +101,4 @@ fun ProductItem(product: Product) {
         }
     }
 }
+

@@ -18,6 +18,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.therealprijectlevelup.models.Sender
 import com.example.therealprijectlevelup.viewModels.ChatViewModel
 import com.example.therealprijectlevelup.viewModels.SettingsViewModel
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 
 @Composable
 fun ChatView(
@@ -103,25 +105,34 @@ fun ChatView(
     }
 }
 
+
 @Composable
 fun ChatBubble(
     text: String,
     isUser: Boolean
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start
+    AnimatedVisibility(
+        visible = true,
+        enter = slideInVertically(
+            initialOffsetY = { it / 2 },
+            animationSpec = tween(300)
+        ) + fadeIn(animationSpec = tween(300))
     ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    color = if (isUser) Color(0xFF0097A7) else Color(0xFF5877FF),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp)
-                .widthIn(max = 260.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start
         ) {
-            Text(text = text, color = Color.White)
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = if (isUser) Color(0xFF0097A7) else Color(0xFF5877FF),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(12.dp)
+                    .widthIn(max = 260.dp)
+            ) {
+                Text(text = text, color = Color.White)
+            }
         }
     }
 }

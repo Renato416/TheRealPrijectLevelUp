@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.sp
 import com.example.therealprijectlevelup.models.CartItem
 import com.example.therealprijectlevelup.viewModels.CartViewModel
 import com.example.therealprijectlevelup.viewModels.SettingsViewModel
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 
 @Composable
 fun CartView(
@@ -63,18 +65,26 @@ fun CartView(
 
 @Composable
 fun CartItemRow(item: CartItem) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        shape = RoundedCornerShape(20.dp)
+    AnimatedVisibility(
+        visible = true,
+        enter = slideInHorizontally(
+            initialOffsetX = { it },
+            animationSpec = tween(300)
+        ) + fadeIn()
     ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            shape = RoundedCornerShape(20.dp)
         ) {
-            Column {
-                Text(item.name)
-                Text("${item.quantity} u.  $${item.price}")
+            Row(
+                modifier = Modifier.padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(item.name)
+                    Text("${item.quantity} u.  $${item.price}")
+                }
             }
         }
     }
