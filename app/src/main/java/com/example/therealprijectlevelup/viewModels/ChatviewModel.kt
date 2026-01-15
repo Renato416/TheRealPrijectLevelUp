@@ -28,7 +28,7 @@ class ChatViewModel : ViewModel() {
 
             // Respuesta del bot
             _messages.value += ChatMessage(
-                "Actualmente los pagos se realizan solo dentro de la app.",
+                "si.",
                 Sender.BOT
             )
         }
