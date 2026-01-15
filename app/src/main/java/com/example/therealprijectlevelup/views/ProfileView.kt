@@ -1,7 +1,6 @@
 package com.example.therealprijectlevelup.views
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -17,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -30,7 +28,7 @@ import com.example.therealprijectlevelup.viewModels.SettingsViewModel
 fun ProfileView(
     onNavigate: (String) -> Unit,
     viewModel: SettingsViewModel,
-    profileViewModel: ProfileViewModel // AHORA RECIBIMOS EL VIEWMODEL ESPECÍFICO
+    profileViewModel: ProfileViewModel
 ) {
     val userProfile by profileViewModel.userProfile.collectAsState()
 
@@ -44,11 +42,11 @@ fun ProfileView(
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState()), // PERMITIR SCROLL SI LA PANTALLA ES PEQUEÑA
+                .verticalScroll(rememberScrollState()), // PERMITIR SCROLL
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // TARJETA CONTENEDORA PRINCIPAL (COMO EN LA IMAGEN)
+            // TARJETA CONTENEDORA PRINCIPAL
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
@@ -82,7 +80,7 @@ fun ProfileView(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // 2. NOMBRE DE USUARIO CON LÁPIZ DE EDICIÓN
+                    // 2. NOMBRE DE USUARIO
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
@@ -105,7 +103,6 @@ fun ProfileView(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     // 3. CAMPOS DE INFORMACIÓN
-                    // DIRECCIÓN (CON ICONO)
                     ProfileField(
                         label = "Dirección",
                         value = userProfile.address,
@@ -114,7 +111,6 @@ fun ProfileView(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // CORREO
                     ProfileField(
                         label = "Correo electrónico",
                         value = userProfile.email
@@ -122,7 +118,6 @@ fun ProfileView(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // TELÉFONO
                     ProfileField(
                         label = "Numero de teléfono",
                         value = userProfile.phone
@@ -130,7 +125,6 @@ fun ProfileView(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // EDAD
                     ProfileField(
                         label = "Edad",
                         value = userProfile.birthDate
@@ -142,17 +136,44 @@ fun ProfileView(
                     TextButton(onClick = { /* ACCIÓN AYUDA */ }) {
                         Text(
                             text = "¿Necesito ayuda?",
-                            color = Color(0xFF5877FF), // AZUL DE MARCA
+                            color = Color(0xFF5877FF),
                             fontSize = 14.sp
                         )
                     }
                 }
             }
+
+            // --- AQUÍ ESTÁ EL NUEVO BOTÓN DE LOGOUT ---
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    // ACCIÓN: BORRAR SESIÓN Y VOLVER AL LOGIN
+                    viewModel.logout()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp), // BUENA ALTURA TÁCTIL
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFD32F2F), // ROJO PARA INDICAR "SALIR"
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "Cerrar Sesión",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            // ESPACIO EXTRA AL FINAL PARA QUE EL SCROLL NO QUEDE APRETADO
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
-// COMPONENTE REUTILIZABLE PARA LOS CAMPOS DE TEXTO
+// COMPONENTE REUTILIZABLE (SIN CAMBIOS)
 @Composable
 fun ProfileField(
     label: String,

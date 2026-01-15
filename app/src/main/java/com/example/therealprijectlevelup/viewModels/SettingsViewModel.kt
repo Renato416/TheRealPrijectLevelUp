@@ -10,31 +10,21 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val settingsStore: SettingsStore) : ViewModel() {
 
-    // TRANSFORMAMOS EL FLOW EN STATEFLOW PARA QUE LA UI LO LEA FÁCILMENTE
     val isDarkMode: StateFlow<Boolean> = settingsStore.isDarkMode
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = false
-        )
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
+    // ESTADO DE SESIÓN (SI ESTÁ VACÍO, NO HAY USUARIO)
     val userEmail: StateFlow<String> = settingsStore.getEmail
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = ""
-        )
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
 
-    // FUNCIONES PARA MODIFICAR LOS DATOS
     fun toggleDarkMode(enabled: Boolean) {
-        viewModelScope.launch {
-            settingsStore.saveDarkMode(enabled)
-        }
+        viewModelScope.launch { settingsStore.saveDarkMode(enabled) }
     }
 
-    fun updateEmail(email: String) {
+    // --- NUEVA FUNCIÓN: CERRAR SESIÓN ---
+    fun logout() {
         viewModelScope.launch {
-            settingsStore.saveEmail(email)
+            settingsStore.saveEmail("") // BORRAMOS EL USUARIO
         }
     }
 }

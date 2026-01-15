@@ -11,18 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.therealprijectlevelup.data.SettingsStore
 import com.example.therealprijectlevelup.ui.theme.TheRealPrijectLevelUpTheme
-import com.example.therealprijectlevelup.viewModels.SettingsViewModel
-import com.example.therealprijectlevelup.viewModels.HomeViewModel
-import com.example.therealprijectlevelup.viewModels.CartViewModel
-import com.example.therealprijectlevelup.viewModels.ChatViewModel
-import com.example.therealprijectlevelup.viewModels.ProfileViewModel
-import com.example.therealprijectlevelup.views.CartView
-import com.example.therealprijectlevelup.views.HomeView
-import com.example.therealprijectlevelup.views.ProfileView
-import com.example.therealprijectlevelup.views.ChatView
+import com.example.therealprijectlevelup.viewModels.*
+import com.example.therealprijectlevelup.views.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,29 +23,55 @@ class MainActivity : ComponentActivity() {
         setContent {
             val context = LocalContext.current
 
-            // 1. INICIALIZACIÓN DE LOS COMPONENTES DE PERSISTENCIA Y ESTADO GLOBAL
+            // 1. DATABASE
             val settingsStore = remember { SettingsStore(context) }
+
+            // 2. VIEWMODELS (CONECTADOS AL STORE)
+            // Usamos 'remember' para simular inyección de dependencias simple
             val settingsViewModel = remember { SettingsViewModel(settingsStore) }
+            val loginViewModel = remember { LoginViewModel(settingsStore) }
+            val registerViewModel = remember { RegisterViewModel(settingsStore) }
 
-            // 2. INICIALIZACIÓN DE VIEWMODELS ESPECÍFICOS DE CADA VISTA
-            // SE UTILIZA EL DELEGADO viewModel() PARA QUE ANDROID GESTIONE SU CICLO DE VIDA
-            val homeViewModel: HomeViewModel = viewModel()
-            val cartViewModel: CartViewModel = viewModel()
-            val chatViewModel: ChatViewModel = viewModel()
-            val profileViewModel: ProfileViewModel = viewModel()
+            // Estos no necesitan Store por ahora, pero Profile sí podría en el futuro
+            val homeViewModel = remember { HomeViewModel() }
+            val cartViewModel = remember { CartViewModel() }
+            val chatViewModel = remember { ChatViewModel() }
+            val profileViewModel = remember { ProfileViewModel() }
 
-            // 3. OBSERVACIÓN DEL MODO OSCURO
+            // 3. ESTADOS GLOBALES
             val darkModeActive by settingsViewModel.isDarkMode.collectAsState()
+            val userSession by settingsViewModel.userEmail.collectAsState()
 
             TheRealPrijectLevelUpTheme(darkTheme = darkModeActive) {
-                var currentScreen by rememberSaveable { mutableStateOf("home") }
+
+                // VARIABLE DE NAVEGACIÓN
+                var currentScreen by rememberSaveable { mutableStateOf("login") }
+
+                // 4. LÓGICA DE SESIÓN AUTOMÁTICA
+                // Cada vez que 'userSession' cambie, decidimos a dónde ir
+                LaunchedEffect(userSession) {
+                    if (userSession.isNotEmpty()) {
+                        // SI HAY USUARIO GUARDADO, VAMOS DIRECTO A HOME
+                        currentScreen = "home"
+                    } else {
+                        // SI NO HAY USUARIO (O SE HIZO LOGOUT), VAMOS A LOGIN
+                        currentScreen = "login"
+                    }
+                }
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // 4. NAVEGACIÓN CON PARÁMETROS NOMBRADOS EXACTOS SEGÚN CADA VISTA
                     when (currentScreen) {
+                        "login" -> LoginScreen(
+                            onRegisterClick = { currentScreen = "register" },
+                            viewModel = loginViewModel
+                        )
+                        "register" -> RegisterScreen(
+                            onBack = { currentScreen = "login" },
+                            viewModel = registerViewModel
+                        )
                         "home" -> HomeView(
                             onNavigate = { currentScreen = it },
                             homeViewModel = homeViewModel,
@@ -72,7 +90,7 @@ class MainActivity : ComponentActivity() {
                         "profile" -> ProfileView(
                             onNavigate = { currentScreen = it },
                             viewModel = settingsViewModel,
-                            profileViewModel = profileViewModel // PASAR EL NUEVO VIEWMODEL
+                            profileViewModel = profileViewModel
                         )
                     }
                 }
