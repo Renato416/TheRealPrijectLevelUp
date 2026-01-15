@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode // IMPORTANTE: ICONO LUNA
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.WbSunny // IMPORTANTE: ICONO SOL
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,7 +30,7 @@ fun LevelUpHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF5877FF)) // MANTENEMOS EL AZUL DE MARCA
+            .background(Color(0xFF5877FF)) // AZUL DE MARCA
             .padding(top = 48.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
         Row(
@@ -37,7 +39,7 @@ fun LevelUpHeader(
         ) {
             Text(
                 text = title,
-                color = Color.White, // TEXTO SIEMPRE BLANCO SOBRE FONDO AZUL
+                color = Color.White,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.ExtraBold
             )
@@ -50,7 +52,6 @@ fun LevelUpHeader(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // CAMPO DE BÚSQUEDA ADAPTABLE
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
@@ -73,37 +74,33 @@ fun LevelUpHeader(
                 },
                 shape = RoundedCornerShape(12.dp),
                 colors = TextFieldDefaults.colors(
-                    // AQUÍ ESTÁ LA MAGIA: USAMOS 'surface' EN LUGAR DE 'Color.White'
-                    // MODO CLARO -> BLANCO | MODO OSCURO -> GRIS OSCURO
                     unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
-
-                    // EL TEXTO SE ADAPTA (NEGRO O BLANCO)
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-
-                    // QUITAMOS EL BORDE POR DEFECTO PARA QUE SE VEA LIMPIO
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent
                 )
             )
 
-            Button(
+            // --- AQUÍ ESTÁ EL CAMBIO SOLICITADO ---
+            IconButton(
                 onClick = {
                     viewModel.toggleDarkMode(!isDark)
                 },
-                modifier = Modifier.height(50.dp),
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    // INTERCAMBIO DE COLORES PARA FEEDBACK VISUAL
-                    containerColor = if (isDark) Color.White else Color.Black
-                )
+                modifier = Modifier
+                    .size(50.dp) // TAMAÑO PARA QUE QUEDE ALINEADO CON LA BARRA
+                // OPCIONAL: FONDO CIRCULAR SUTIL SI LO QUIERES
+                // .background(Color.Black.copy(alpha = 0.1f), CircleShape)
             ) {
-                Text(
-                    text = if (isDark) "LUZ" else "MODO",
-                    fontSize = 12.sp,
-                    color = if (isDark) Color.Black else Color.White
+                // LÓGICA VISUAL:
+                // SI ESTÁ OSCURO (isDark = true) -> MOSTRAMOS SOL (WbSunny)
+                // SI ESTÁ CLARO (isDark = false) -> MOSTRAMOS LUNA (DarkMode)
+                Icon(
+                    imageVector = if (isDark) Icons.Default.WbSunny else Icons.Default.DarkMode,
+                    contentDescription = "Cambiar Tema",
+                    tint = Color.White, // ICONO BLANCO SOBRE FONDO AZUL
+                    modifier = Modifier.size(32.dp) // TAMAÑO DEL ICONO INTERNO
                 )
             }
         }
