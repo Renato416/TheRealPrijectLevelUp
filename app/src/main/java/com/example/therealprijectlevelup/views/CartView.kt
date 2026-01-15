@@ -105,7 +105,6 @@ fun CartItemRow(item: CartItem) {
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(0.8.dp, MaterialTheme.colorScheme.outline),
             colors = CardDefaults.cardColors(
-                // CAMBIO 1: FONDO SIEMPRE BLANCO
                 containerColor = Color.White
             ),
             shape = RoundedCornerShape(16.dp)
@@ -135,7 +134,6 @@ fun CartItemRow(item: CartItem) {
                         text = item.name,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Normal,
-                        // CAMBIO 2: TEXTO SIEMPRE NEGRO
                         color = Color.Black,
                         maxLines = 2
                     )
@@ -150,7 +148,6 @@ fun CartItemRow(item: CartItem) {
                         Text(
                             text = "${item.quantity} u.",
                             fontSize = 14.sp,
-                            // CAMBIO 3: TEXTO SIEMPRE NEGRO
                             color = Color.Black
                         )
 
@@ -158,7 +155,6 @@ fun CartItemRow(item: CartItem) {
                             text = "$${item.price}",
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Normal,
-                            // CAMBIO 4: TEXTO SIEMPRE NEGRO
                             color = Color.Black
                         )
                     }

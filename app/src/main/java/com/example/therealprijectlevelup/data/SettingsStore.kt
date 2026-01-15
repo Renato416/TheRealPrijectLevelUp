@@ -54,7 +54,6 @@ class SettingsStore(private val context: Context) {
         }
     }
 
-    // NUEVA FUNCIÓN: GUARDAR CREDENCIALES AL REGISTRARSE
     suspend fun saveCredentials(user: String, pass: String) {
         context.dataStore.edit { preferences ->
             preferences[STORED_USER_KEY] = user

@@ -27,5 +27,4 @@ class ProfileViewModel : ViewModel() {
     )
     val userProfile: StateFlow<UserProfile> = _userProfile.asStateFlow()
 
-    // AQUÍ IRÍAN FUNCIONES COMO updateProfile(), logout(), ETC.
 }

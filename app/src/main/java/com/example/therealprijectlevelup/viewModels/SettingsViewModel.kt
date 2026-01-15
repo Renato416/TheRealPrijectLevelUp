@@ -21,7 +21,6 @@ class SettingsViewModel(private val settingsStore: SettingsStore) : ViewModel() 
         viewModelScope.launch { settingsStore.saveDarkMode(enabled) }
     }
 
-    // --- NUEVA FUNCIÓN: CERRAR SESIÓN ---
     fun logout() {
         viewModelScope.launch {
             settingsStore.saveEmail("") // BORRAMOS EL USUARIO

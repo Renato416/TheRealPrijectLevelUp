@@ -26,7 +26,6 @@ import com.example.therealprijectlevelup.viewModels.SettingsViewModel
 fun LevelUpHeader(
     title: String,
     viewModel: SettingsViewModel,
-    // AGREGAMOS ESTO PARA PODER ACTIVAR EL BUSCADOR DESDE FUERA
     searchFocusRequester: FocusRequester? = null
 ) {
     val isDark by viewModel.isDarkMode.collectAsState()
@@ -62,7 +61,6 @@ fun LevelUpHeader(
                 modifier = Modifier
                     .weight(1f)
                     .height(50.dp)
-                    // AQUÍ VINCULAMOS EL CONTROL DE FOCO SI EXISTE
                     .then(if (searchFocusRequester != null) Modifier.focusRequester(searchFocusRequester) else Modifier),
                 placeholder = {
                     Text(
@@ -95,8 +93,6 @@ fun LevelUpHeader(
                 },
                 modifier = Modifier.size(50.dp)
             ) {
-                // AQUÍ VA TU LÓGICA DE ICONOS QUE YA ARREGLASTE (SOL/LUNA O ESTRELLA/CARA)
-                // PUSE ESTOS POR DEFECTO, USA LOS QUE YA TENGAS FUNCIONANDO
                 Icon(
                     imageVector = if (isDark) Icons.Default.WbSunny else Icons.Default.DarkMode,
                     contentDescription = "Cambiar Tema",

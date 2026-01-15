@@ -61,8 +61,6 @@ fun HomeView(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
 
-        // ¡IMPORTANTE! ELIMINAMOS EL topBar DE AQUÍ PARA QUE EL HEADER PUEDA SCROLLEAR
-        // topBar = { LevelUpHeader(...) }, <-- ESTO YA NO VA AQUÍ
 
         floatingActionButton = {
             AnimatedVisibility(
@@ -98,14 +96,11 @@ fun HomeView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = paddingValues.calculateBottomPadding()) // SOLO PADDING ABAJO
-            // QUITAMOS EL PADDING TOP PORQUE EL HEADER AHORA ES PARTE DE LA LISTA
             ,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // --- AQUÍ ESTÁ EL TRUCO ---
-            // PONEMOS EL HEADER COMO EL PRIMER ITEM DE LA LISTA
             item(span = { GridItemSpan(2) }) {
                 LevelUpHeader(
                     title = "Level UP",
@@ -115,14 +110,12 @@ fun HomeView(
             }
             // --------------------------
 
-            // LUEGO LOS PRODUCTOS NORMALMENTE (CON MARGEN A LOS LADOS)
             items(products) { product ->
                 Box(modifier = Modifier.padding(horizontal = 8.dp)) {
                     ProductItem(product)
                 }
             }
 
-            // ESPACIO FINAL PARA QUE EL BOTÓN NO TAPE EL ÚLTIMO PRODUCTO
             item(span = { GridItemSpan(2) }) {
                 Spacer(modifier = Modifier.height(80.dp))
             }
@@ -130,7 +123,6 @@ fun HomeView(
     }
 }
 
-// TU COMPONENTE PRODUCTITEM SE MANTIENE IGUAL QUE ANTES (CON EL FIX DEL COLOR BLANCO)
 @Composable
 fun ProductItem(product: Product) {
     var visible by remember { mutableStateOf(false) }

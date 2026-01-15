@@ -5,5 +5,5 @@ data class CartItem(
     val name: String,
     val quantity: Int,
     val price: String,
-    val imageRes: Int // NUEVO CAMPO OBLIGATORIO
+    val imageRes: Int
 )

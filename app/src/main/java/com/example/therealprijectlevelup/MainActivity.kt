@@ -27,12 +27,10 @@ class MainActivity : ComponentActivity() {
             val settingsStore = remember { SettingsStore(context) }
 
             // 2. VIEWMODELS (CONECTADOS AL STORE)
-            // Usamos 'remember' para simular inyección de dependencias simple
             val settingsViewModel = remember { SettingsViewModel(settingsStore) }
             val loginViewModel = remember { LoginViewModel(settingsStore) }
             val registerViewModel = remember { RegisterViewModel(settingsStore) }
 
-            // Estos no necesitan Store por ahora, pero Profile sí podría en el futuro
             val homeViewModel = remember { HomeViewModel() }
             val cartViewModel = remember { CartViewModel() }
             val chatViewModel = remember { ChatViewModel() }

@@ -25,7 +25,6 @@ class LoginViewModel(private val settingsStore: SettingsStore) : ViewModel() {
             }
 
             // 1. OBTENEMOS EL USUARIO Y CONTRASEÑA REALES GUARDADOS
-            // .first() OBTIENE EL VALOR ACTUAL DEL DATASTORE
             val savedUser = settingsStore.getStoredUser.first()
             val savedPass = settingsStore.getStoredPass.first()
 

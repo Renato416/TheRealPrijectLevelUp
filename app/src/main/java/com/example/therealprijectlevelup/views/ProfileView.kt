@@ -60,7 +60,6 @@ fun ProfileView(
             ) {
                 Column(
                     modifier = Modifier
-                        // CAMBIO CLAVE: PADDING INFERIOR REDUCIDO A 8.dp (ANTES ERA 24)
                         .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 8.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -146,7 +145,6 @@ fun ProfileView(
                 }
             }
 
-            // CAMBIO CLAVE: ESPACIO REDUCIDO ENTRE TARJETA Y BOTÓN (ANTES 24.dp)
             Spacer(modifier = Modifier.height(16.dp))
 
             // BOTÓN CERRAR SESIÓN
@@ -170,7 +168,6 @@ fun ProfileView(
                 )
             }
 
-            // ESPACIO PARA SCROLL
             Spacer(modifier = Modifier.height(100.dp))
         }
     }

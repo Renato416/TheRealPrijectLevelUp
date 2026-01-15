@@ -4,5 +4,5 @@ data class Product(
     val id: Int,
     val name: String,
     val price: String,
-    val imageRes: Int // NUEVO CAMPO OBLIGATORIO
+    val imageRes: Int
 )
