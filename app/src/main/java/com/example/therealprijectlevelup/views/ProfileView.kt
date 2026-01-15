@@ -33,7 +33,7 @@ fun ProfileView(
     val userProfile by profileViewModel.userProfile.collectAsState()
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background, // ADAPTABLE AL MODO OSCURO
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = { LevelUpHeader("Level UP", viewModel) },
         bottomBar = { LevelUpBottomNavigation("profile", onNavigate) }
     ) { padding ->
@@ -41,10 +41,12 @@ fun ProfileView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()), // PERMITIR SCROLL
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // TARJETA CONTENEDORA PRINCIPAL
             Card(
@@ -58,7 +60,8 @@ fun ProfileView(
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(24.dp)
+                        // CAMBIO CLAVE: PADDING INFERIOR REDUCIDO A 8.dp (ANTES ERA 24)
+                        .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 8.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -100,7 +103,7 @@ fun ProfileView(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     // 3. CAMPOS DE INFORMACIÓN
                     ProfileField(
@@ -130,7 +133,7 @@ fun ProfileView(
                         value = userProfile.birthDate
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     // LINK DE AYUDA
                     TextButton(onClick = { /* ACCIÓN AYUDA */ }) {
@@ -143,19 +146,19 @@ fun ProfileView(
                 }
             }
 
-            // --- AQUÍ ESTÁ EL NUEVO BOTÓN DE LOGOUT ---
-            Spacer(modifier = Modifier.height(24.dp))
+            // CAMBIO CLAVE: ESPACIO REDUCIDO ENTRE TARJETA Y BOTÓN (ANTES 24.dp)
+            Spacer(modifier = Modifier.height(16.dp))
 
+            // BOTÓN CERRAR SESIÓN
             Button(
                 onClick = {
-                    // ACCIÓN: BORRAR SESIÓN Y VOLVER AL LOGIN
                     viewModel.logout()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp), // BUENA ALTURA TÁCTIL
+                    .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFD32F2F), // ROJO PARA INDICAR "SALIR"
+                    containerColor = Color(0xFF5877FF),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(12.dp)
@@ -167,8 +170,8 @@ fun ProfileView(
                 )
             }
 
-            // ESPACIO EXTRA AL FINAL PARA QUE EL SCROLL NO QUEDE APRETADO
-            Spacer(modifier = Modifier.height(24.dp))
+            // ESPACIO PARA SCROLL
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
