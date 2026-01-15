@@ -2,6 +2,7 @@ package com.example.therealprijectlevelup.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.therealprijectlevelup.R // IMPORTANTE
 import com.example.therealprijectlevelup.models.CartItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,11 +20,12 @@ class CartViewModel : ViewModel() {
 
     private fun loadCart() {
         viewModelScope.launch {
-            delay(1000) // Simula carga desde BD / API
+            delay(1000)
 
+            // ASIGNAMOS LAS MISMAS IMÁGENES AL CARRITO
             _cartItems.value = listOf(
-                CartItem(1, "Audifonos gamer estilo creeper", 2, "41.980"),
-                CartItem(2, "Mesa gamer RGB", 1, "110.990")
+                CartItem(1, "Audifonos gamer estilo creeper", 2, "41.980", R.drawable.img_audifonos),
+                CartItem(2, "Mesa gamer RGB", 1, "110.990", R.drawable.img_escritorio)
             )
         }
     }

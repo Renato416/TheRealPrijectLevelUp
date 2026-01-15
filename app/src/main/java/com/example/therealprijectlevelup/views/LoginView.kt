@@ -132,17 +132,12 @@ fun SimpleHeader(title: String) {
         // SIMULACIÓN DEL LOGO "LevelUP" CON COLORES
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Level",
+                text = "Level UP",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.Black
             )
-            Text(
-                text = "UP",
-                fontSize = 36.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color(0xFF00C897) // COLOR VERDE DEL LOGO
-            )
+
         }
         Text(
             text = title,

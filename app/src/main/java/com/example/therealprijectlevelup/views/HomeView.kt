@@ -2,6 +2,7 @@ package com.example.therealprijectlevelup.views
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +32,6 @@ fun HomeView(
     val products = homeViewModel.products.value
 
     Scaffold(
-        // EL FONDO REACCIONARÁ AUTOMÁTICAMENTE AL TEMA (BLANCO O NEGRO)
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             LevelUpHeader("Level UP", settingsViewModel)
@@ -76,12 +78,11 @@ fun ProductItem(product: Product) {
                 scaleY = scale
                 alpha = scale
             },
-        // AQUI ESTA EL CAMBIO CLAVE PARA EL MODO OSCURO:
-        // USAMOS 'outlineVariant' QUE ES GRIS EN MODO CLARO Y GRIS CLARO EN MODO OSCURO
+        // MANTENEMOS EL BORDE ADAPTABLE PARA QUE SE VEA BIEN EN AMBOS MODOS
         border = BorderStroke(0.8.dp, MaterialTheme.colorScheme.outlineVariant),
         colors = CardDefaults.cardColors(
-            // 'surface' ES BLANCO EN MODO CLARO Y GRIS OSCURO EN MODO OSCURO
-            containerColor = MaterialTheme.colorScheme.surface
+            // CAMBIO 1: FONDO SIEMPRE BLANCO PARA COMBINAR CON LA IMAGEN JPEG
+            containerColor = Color.White
         ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -93,18 +94,15 @@ fun ProductItem(product: Product) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Surface(
-                modifier = Modifier.size(120.dp),
-                color = Color.Transparent
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // EL TEXTO DEL ICONO AHORA USA 'onSurface' PARA SER VISIBLE EN AMBOS MODOS
-                    Text("IMG", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
+            // IMAGEN DEL PRODUCTO
+            Image(
+                painter = painterResource(id = product.imageRes),
+                contentDescription = product.name,
+                modifier = Modifier
+                    .size(120.dp)
+                    .padding(8.dp),
+                contentScale = ContentScale.Fit
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -113,8 +111,8 @@ fun ProductItem(product: Product) {
                 text = product.name,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Normal,
-                // QUITAMOS 'Color.Black'. USAMOS EL COLOR DEL TEMA POR DEFECTO
-                color = MaterialTheme.colorScheme.onSurface,
+                // CAMBIO 2: TEXTO SIEMPRE NEGRO (PARA QUE SE VEA SOBRE BLANCO)
+                color = Color.Black,
                 fontSize = 20.sp
             )
 
@@ -125,8 +123,8 @@ fun ProductItem(product: Product) {
                 text = "$ ${product.price}",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Normal,
-                // QUITAMOS 'Color.Black'. EL SISTEMA ELEGIRÁ BLANCO O NEGRO SEGÚN EL MODO
-                color = MaterialTheme.colorScheme.onSurface,
+                // CAMBIO 3: TEXTO SIEMPRE NEGRO
+                color = Color.Black,
                 fontSize = 22.sp
             )
 
@@ -136,7 +134,6 @@ fun ProductItem(product: Product) {
             Button(
                 onClick = { /* LÓGICA DE COMPRA */ },
                 colors = ButtonDefaults.buttonColors(
-                    // ESTE AZUL SE MANTIENE PORQUE ES COLOR DE MARCA (BRANDING)
                     containerColor = Color(0xFF5877FF),
                     contentColor = Color.White
                 ),
